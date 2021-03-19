@@ -1,1 +1,0 @@
-# array example in assembly
