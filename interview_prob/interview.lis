@@ -1,0 +1,256 @@
+     1                                  ;****************************************************************************************************************************
+     2                                  ;Program name: create an array and sum  
+     3                                  ;This program is use to make an array and sum by creating the multiple assembly file *
+     4                                  ;Programming Language:x86Assembly
+     5                                  ; Program Description: This program asks a user to input floating point into array and 
+     6                                  ; return the sum of the array.
+     7                                  ;********************************************************************************************
+     8                                  ; Copyright (C) 2020 Bilal El-haghassan                                                     *
+     9                                  ; This program is free software: you can redistribute it and/or modify it under the terms   *
+    10                                  ; of the GNU General Public License version 3 as published by the Free Software Foundation. *
+    11                                  ; This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY  *
+    12                                  ; without even the implied Warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. *
+    13                                  ; See the GNU General Public License for more details. A copy of the GNU General Public     *
+    14                                  ; License v3 is available here:  <https://www.gnu.org/licenses/>.  
+    15                                  ;                          
+    16                                  ;****************************************************************************************************************************
+    17                                  
+    18                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
+    19                                  ;
+    20                                  ;Author information
+    21                                  ;  Author name: Andy Cao
+    22                                  ;  Author email: dongyicao123@csu.fullerton.edu
+    23                                  ;
+    24                                  ;Program information
+    25                                  ;  Program name: sum of array
+    26                                  ;  Programming languages: One modules in C, one module in C++ and three module in X86
+    27                                  ;  Date program began: 2021-Mar-10
+    28                                  ;  Date of last update: 2021-Mar-20
+    29                                  ;  Date of reorganization of comments: 2020-Mar-20
+    30                                  ;  Files in this program: display.cpp, fill.asm, main.c, control.asm, sum.asm
+    31                                  ;  Status: Finished.  The program was tested extensively with no errors in Xubuntu19.04.
+    32                                  ;
+    33                                  ;This file
+    34                                  ;   File name: control.asm
+    35                                  ;   Language: X86 with Intel syntax.
+    36                                  ;   Max page width: 145 columns
+    37                                  ;   Assemble: nasm -f elf64 -l control.lis -o control.o control.asm
+    38                                  ;===== Begin code area =======================================================================================================
+    39                                  extern printf 
+    40                                  extern scanf
+    41                                  
+    42                                  global interview
+    43                                  
+    44                                  segment .data
+    45 00000000 48656C6C6F2025732E-         intro_text db "Hello %s. I am Ms Fenster. The interview will begin now", 10,0
+    45 00000009 204920616D204D7320-
+    45 00000012 46656E737465722E20-
+    45 0000001B 54686520696E746572-
+    45 00000024 766965772077696C6C-
+    45 0000002D 20626567696E206E6F-
+    45 00000036 770A00             
+    46 00000039 576F77212024256C66-         salary_display db "Wow! $%lf That's a lot of cash. Who do you think you are, Chris Sawyer(y or n)?", 0
+    46 00000042 205468617427732061-
+    46 0000004B 206C6F74206F662063-
+    46 00000054 6173682E2057686F20-
+    46 0000005D 646F20796F75207468-
+    46 00000066 696E6B20796F752061-
+    46 0000006F 72652C204368726973-
+    46 00000078 205361777965722879-
+    46 00000081 206F72206E293F00   
+    47 00000089 257300                      input db "%s", 0 
+    48 0000008C 0A506C656173652065-         first_resistance db 10,"Please enter the resistance of circuit #1 in ohms:", 0
+    48 00000095 6E7465722074686520-
+    48 0000009E 726573697374616E63-
+    48 000000A7 65206F662063697263-
+    48 000000B0 75697420233120696E-
+    48 000000B9 206F686D733A00     
+    49 000000C0 0A5768617420697320-         second_resistance db 10, "What is the resistance of circuit #2 in ohms:", 0
+    49 000000C9 746865207265736973-
+    49 000000D2 74616E6365206F6620-
+    49 000000DB 636972637569742023-
+    49 000000E4 3220696E206F686D73-
+    49 000000ED 3A00               
+    50 000000EF 0A54686520746F7461-         result db 10, "The total resistance is %lf Ohms.", 10, 0
+    50 000000F8 6C2072657369737461-
+    50 00000101 6E636520697320256C-
+    50 0000010A 66204F686D732E0A00 
+    51 00000113 256C6600                    float_format db "%lf", 0
+    52 00000117 0A5468616E6B20796F-         end_display db 10,"Thank you. Please follow the exit signs to the front desk",10, 0
+    52 00000120 752E20506C65617365-
+    52 00000129 20666F6C6C6F772074-
+    52 00000132 686520657869742073-
+    52 0000013B 69676E7320746F2074-
+    52 00000144 68652066726F6E7420-
+    52 0000014D 6465736B0A00       
+    53 00000153 5765726520796F7520-         major db "Were you a computer science major (y or n)?", 0
+    53 0000015C 6120636F6D70757465-
+    53 00000165 7220736369656E6365-
+    53 0000016E 206D616A6F72202879-
+    53 00000177 206F72206E293F00   
+    54                                  
+    55                                  segment .bss
+    56                                  
+    57                                  segment .text
+    58                                  
+    59                                  interview:
+    60                                  ;Insurance for any caller of this assembly module
+    61 00000000 55                            push rbp
+    62 00000001 4889E5                        mov rbp, rsp
+    63 00000004 57                            push rdi
+    64 00000005 56                            push rsi
+    65 00000006 52                            push rdx
+    66 00000007 51                            push rcx
+    67 00000008 4150                          push r8
+    68 0000000A 4151                          push r9
+    69 0000000C 4152                          push r10
+    70 0000000E 4153                          push r11
+    71 00000010 4154                          push r12
+    72 00000012 4155                          push r13
+    73 00000014 4156                          push r14
+    74 00000016 4157                          push r15
+    75 00000018 53                            push rbx
+    76 00000019 9C                            pushf
+    77                                  ;-------------------------------------------------------------------------------
+    78                                      
+    79 0000001A 6A00                        push qword 0	                    ;create even number of pushes 
+    80 0000001C 4989FF                      mov r15, rdi                        ;push name into this file
+    81 0000001F F2440F10F8                  movsd xmm15, xmm0                   ;push salary into this file
+    82                                  ;-------------------------------------------------------------------------------
+    83 00000024 6A00                        push qword 0
+    84 00000026 B800000000                  mov rax, 0
+    85 0000002B 48BF-                       mov rdi, intro_text
+    85 0000002D [0000000000000000] 
+    86 00000035 4C89FE                      mov rsi, r15
+    87 00000038 E8(00000000)                call printf                                
+    88 0000003D 58                          pop rax                             ;print the introduction with name given
+    89                                  ;-------------------------------------------------------------------------------
+    90 0000003E 6A00                        push qword 0
+    91 00000040 B801000000                  mov rax, 1
+    92 00000045 48BF-                       mov rdi, salary_display
+    92 00000047 [3900000000000000] 
+    93 0000004F F2410F10C7                  movsd xmm0, xmm15
+    94 00000054 E8(00000000)                call printf                         ;print the salary and ask for yes or no
+    95 00000059 58                          pop rax 
+    96                                  ;-------------------------------------------------------------------------------
+    97 0000005A 6A00                        push qword 0
+    98 0000005C 48BF-                       mov rdi, input
+    98 0000005E [8900000000000000] 
+    99 00000066 4889E6                      mov rsi, rsp 
+   100 00000069 E8(00000000)                call scanf 
+   101 0000006E 58                          pop rax                             ;take the given choice 
+   102                                  ;-------------------------------------------------------------------------------
+   103 0000006F 41BE79000000                mov r14, 'y'                        ;character 'y' 
+   104 00000075 4C39F0                      cmp rax, r14                        ;compare with the input
+   105                                  
+   106 00000078 48B80000000080842E-         mov rax, 0x412E848000000000         ;if yes, new salary is 1 million
+   106 00000081 41                 
+   107 00000082 664C0F6EF8                  movq xmm15, rax                     ;store it into xmm15
+   108 00000087 0F8408010000                je exit                             ;jump to the end 
+   109                                  ;-------------------------------------------------------------------------------  
+   110 0000008D 6A00                        push qword 0
+   111 0000008F B800000000                  mov rax, 0
+   112 00000094 48BF-                       mov rdi, first_resistance
+   112 00000096 [8C00000000000000] 
+   113 0000009E E8(00000000)                call printf
+   114 000000A3 58                          pop rax                             ;ask the user for resistance of circuit #1
+   115                                  
+   116 000000A4 6A00                        push qword 0
+   117 000000A6 B800000000                  mov rax, 0 
+   118 000000AB 48BF-                       mov rdi, float_format               ;floating point
+   118 000000AD [1301000000000000] 
+   119 000000B5 4889E6                      mov rsi, rsp
+   120 000000B8 E8(00000000)                call scanf
+   121 000000BD F2440F103424                movsd xmm14, [rsp]                  ;store it into xmm14 
+   122 000000C3 58                          pop rax
+   123                                  ;-------------------------------------------------------------------------------
+   124 000000C4 6A00                        push qword 0
+   125 000000C6 B800000000                  mov rax, 0
+   126 000000CB 48BF-                       mov rdi, second_resistance          ;ask the user for the resistance of circuit #2
+   126 000000CD [C000000000000000] 
+   127 000000D5 E8(00000000)                call printf
+   128 000000DA 58                          pop rax         
+   129                                  
+   130 000000DB 6A00                        push qword 0
+   131 000000DD B800000000                  mov rax, 0 
+   132 000000E2 48BF-                       mov rdi, float_format               ;second floating point
+   132 000000E4 [1301000000000000] 
+   133 000000EC 4889E6                      mov rsi, rsp
+   134 000000EF E8(00000000)                call scanf
+   135 000000F4 F2440F102C24                movsd xmm13, [rsp]                  ;store it into xmm13
+   136 000000FA 58                          pop rax
+   137                                  
+   138                                  ;---------------------------Calculation----------------------------------------- 
+   139 000000FB 41BD01000000                mov r13, 1
+   140 00000101 F24D0F2AE5                  cvtsi2sd xmm12, r13                 ;convert to precision floating point
+   141                                  
+   142 00000106 F2450F5EE6                  divsd xmm12, xmm14                  ;divide 1 / circuit #1
+   143 0000010B F24D0F2ADD                  cvtsi2sd xmm11, r13                 ;convert again and store into xmm11
+   144 00000110 F2450F5EDD                  divsd xmm11, xmm13                  ;divide 1 / circuit #2
+   145 00000115 F2450F58E3                  addsd xmm12, xmm11                  ; add xmm12 and xmm11
+   146 0000011A F24D0F2AD5                  cvtsi2sd xmm10, r13                 ;convert again and store into xmm10
+   147 0000011F F2450F5ED4                  divsd xmm10, xmm12                  ;divide with 1 / (1/circuit #1) + (1/circuit #2)
+   148                                      
+   149                                  ;------------------------------------------------------------------------------- 
+   150 00000124 6A00                        push qword 0
+   151 00000126 B801000000                  mov rax, 1
+   152 0000012B 48BF-                       mov rdi, result
+   152 0000012D [EF00000000000000] 
+   153 00000135 F2410F10C2                  movsd xmm0, xmm10
+   154 0000013A E8(00000000)                call printf                         ;print out the result of calcuation
+   155 0000013F 58                          pop rax 
+   156                                  ;------------------------------------------------------------------------------- 
+   157 00000140 6A00                        push qword 0
+   158 00000142 B801000000                  mov rax, 1
+   159 00000147 48BF-                       mov rdi, major
+   159 00000149 [5301000000000000] 
+   160 00000151 E8(00000000)                call printf                                ;ask user for cs major 
+   161 00000156 58                          pop rax 
+   162                                  
+   163 00000157 6A00                        push qword 0    
+   164 00000159 48BF-                       mov rdi, input                             ;store input 
+   164 0000015B [8900000000000000] 
+   165 00000163 4889E6                      mov rsi, rsp 
+   166 00000166 E8(00000000)                call scanf 
+   167 0000016B 58                          pop rax  
+   168                                  
+   169 0000016C 41BE79000000                mov r14, 'y'                               ;determine whether cs major or not
+   170 00000172 4C39F0                      cmp rax, r14
+   171 00000175 48B848E17A140E7CF5-         mov rax, 0x40F57C0E147AE148                ;if yes return $88000.80
+   171 0000017E 40                 
+   172 0000017F 664C0F6EF8                  movq xmm15, rax                            ;store into xmm15
+   173 00000184 740F                        je exit                                    ;jump to the end 
+   174                                  
+   175 00000186 48B814AE47E17AC092-         mov rax, 0x4092C07AE147AE14                ;else return $1200.12
+   175 0000018F 40                 
+   176 00000190 664C0F6EF8                  movq xmm15, rax
+   177                                  ;------------------------------------------------------------------------------- 
+   178                                      exit:
+   179 00000195 6A00                        push qword 0
+   180 00000197 B800000000                  mov rax, 0
+   181 0000019C 48BF-                       mov rdi, end_display                 ;print the sum that return main 
+   181 0000019E [1701000000000000] 
+   182 000001A6 E8(00000000)                call printf
+   183 000001AB 58                          pop rax 
+   184                                  ;-------------------------------------------------------------------------------
+   185 000001AC 58                          pop rax
+   186 000001AD F2410F10C7                  movsd xmm0, xmm15                        ;back to main.c 
+   187                                  ;-------------------------------------------------------------------------------
+   188                                  ;Restore original values to integer registers
+   189 000001B2 9D                            popf
+   190 000001B3 5B                            pop rbx
+   191 000001B4 415F                          pop r15
+   192 000001B6 415E                          pop r14
+   193 000001B8 415D                          pop r13
+   194 000001BA 415C                          pop r12
+   195 000001BC 415B                          pop r11
+   196 000001BE 415A                          pop r10
+   197 000001C0 4159                          pop r9
+   198 000001C2 4158                          pop r8
+   199 000001C4 59                            pop rcx
+   200 000001C5 5A                            pop rdx
+   201 000001C6 5E                            pop rsi
+   202 000001C7 5F                            pop rdi
+   203 000001C8 5D                            pop rbp
+   204                                  
+   205 000001C9 C3                            ret
