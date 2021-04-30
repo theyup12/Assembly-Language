@@ -1,13 +1,13 @@
 #!/bin/bash                                                                     
-#program; perimeter & average of rectangle                                      
+#program; mock interview                                     
 #Author: Dongyi Cao                                                             
 rm *.o
 rn *.out
 
-echo "Assemble perimeter.asm"
+echo "Assemble interview.asm"
 nasm -f elf64 -g -gdwarf -l interview.lis -o interview.o interview.asm
 
-echo "compile rectangle.c using gcc compiler standard 2011"
+echo "compile main.c using gcc compiler standard 2011"
 gcc -c -Wall -m64 -no-pie -o main.o main.c -g
 
 echo "link the object files using gcc linker standard 2011"

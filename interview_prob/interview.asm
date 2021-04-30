@@ -1,9 +1,7 @@
 ;****************************************************************************************************************************
-;Program name: create an array and sum  
-;This program is use to make an array and sum by creating the multiple assembly file *
+;Program name: create an interview example 
+;This program is to create a mock interview and find the resistance of circuit  *
 ;Programming Language:x86Assembly
-; Program Description: This program asks a user to input floating point into array and 
-; return the sum of the array.
 ;********************************************************************************************
 ; Copyright (C) 2020 Bilal El-haghassan                                                     *
 ; This program is free software: you can redistribute it and/or modify it under the terms   *
@@ -24,17 +22,17 @@
 ;Program information
 ;  Program name: sum of array
 ;  Programming languages: One modules in C, one module in C++ and three module in X86
-;  Date program began: 2021-Mar-10
-;  Date of last update: 2021-Mar-20
+;  Date program began: 2021-Apr-25
+;  Date of last update: 2021-Apr-30
 ;  Date of reorganization of comments: 2020-Mar-20
 ;  Files in this program: display.cpp, fill.asm, main.c, control.asm, sum.asm
 ;  Status: Finished.  The program was tested extensively with no errors in Xubuntu19.04.
 ;
 ;This file
-;   File name: control.asm
+;   File name: interview.asm
 ;   Language: X86 with Intel syntax.
 ;   Max page width: 145 columns
-;   Assemble: nasm -f elf64 -l control.lis -o control.o control.asm
+;   Assemble: nasm -f elf64 -l interview.lis -o interview.o interview.asm
 ;===== Begin code area =======================================================================================================
 extern printf 
 extern scanf
